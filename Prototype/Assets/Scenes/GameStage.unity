@@ -667,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1430904127}
   - component: {fileID: 1430904128}
+  - component: {fileID: 1430904129}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -682,7 +683,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430904126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7, y: 4, z: 10}
+  m_LocalPosition: {x: -6.5, y: 4, z: 10}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 1018763237}
@@ -739,6 +740,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1430904129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430904126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778453e2f91c2ea49b1ce04d60f53b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Girl: {fileID: 2104313386}
 --- !u!4 &1953177053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8360709003389873251, guid: e0aabb7a8374b9c43ae3e873a242534a, type: 3}
