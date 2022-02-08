@@ -13,6 +13,8 @@ public class GirlController : MonoBehaviour
      public bool isJump;
      public float direction;
 
+     bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,16 +53,29 @@ public class GirlController : MonoBehaviour
 
     void Jump(){
         Vector2 jumpVector = new Vector2(0, jumpForce);
-        if(Input.GetKeyDown(KeyCode.UpArrow)){
+        if(Input.GetKeyDown(KeyCode.UpArrow) && isGrounded){
             isJump = true;
             Rigidbody2D girlRigid= GetComponent<Rigidbody2D>();
             girlRigid.velocity = jumpVector;
         }
     }
-
+    
     void Sit(){
         if(Input.GetKeyDown(KeyCode.DownArrow)){
             isSit = !isSit;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Platform"){
+            if(other.contacts[0].normal.y > 0.7f){
+                isGrounded = true;
+            }
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other) {
+        if(other.gameObject.tag == "Platform"){
+                isGrounded = false;
         }
     }
 }
