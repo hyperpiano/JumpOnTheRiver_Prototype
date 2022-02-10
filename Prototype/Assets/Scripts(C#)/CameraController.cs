@@ -4,37 +4,46 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    //카메라의 움직임의 최대, 최솟값
-    float min = -7.5f;
-    float max = 1500.0f;
-
-    //소녀와 그림자 게임 오브젝트
+    //소녀와 소녀의 그림자 변수 선언
     public GameObject Girl;
-    public GameObject Shadow;
+    public GameObject Girl_Shadow;
+    
+    //소녀와 소녀의 그림자 Transform 변수 선언
+    Transform girl_Transform;
+    Transform girl_Shadow_Transform;
+    
+    //카메라 이동 속도
+    //변수값 조절 가능
+    float speed = 8.0f;
 
-    //소녀 오브젝트 안의 GirlController 컴포넌트와
-    //그림자 오브젝트 안의 ShadowController 컴포넌트
-    GirlController girlControl;
-    ShadowController shadowControl;
-    // Start is called before the first frame update
+    //카메라가 이동해야 할 구간의 길이
+    //(8 - (-7.5))
+    public float distance = 15.5f;
+    float i = 0f;
+    int num = 1;
+
     void Start()
     {
-        girlControl = Girl.GetComponent<GirlController>();
-        shadowControl = Shadow.GetComponent<ShadowController>();
+        //Transform 변수 초기화
+        girl_Transform = Girl.GetComponent<Transform>();
+        girl_Shadow_Transform = Girl_Shadow.GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Girl.transform.position.x < min){
-            gameObject.transform.position = new Vector3(min - min ,gameObject.transform.position.y, gameObject.transform.position.z);
+        //소녀와 그림자 모두 해당 위치에 있을 때
+        if((girl_Transform.position.x >= 8f) && (girl_Shadow_Transform.position.x >= 8f) && (num == 1) && (i <= distance)){
+            transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
+            i += speed * Time.deltaTime;
         }
-        else if(Girl.transform.position.x > max){
-            gameObject.transform.position = new Vector3(max - min ,gameObject.transform.position.y, gameObject.transform.position.z);
+        if((girl_Transform.position.x >= 23.5f) && (girl_Shadow_Transform.position.x >= 23.5f) && (num == 2) && (i <= distance)){
+            transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
+            i += speed * Time.deltaTime;
         }
-        else{
-            gameObject.transform.position = new Vector3(Girl.transform.position.x - min, gameObject.transform.position.y, gameObject.transform.position.z);
+
+        if(i > distance){
+            num++;
+            i = 0;
         }
-        
     }
 }

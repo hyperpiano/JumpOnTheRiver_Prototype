@@ -38,12 +38,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts(C#)\BoxshadowController.cs" />
      <Compile Include="Assets\Scripts(C#)\CloudController.cs" />
+     <Compile Include="Assets\Scripts(C#)\BGController.cs" />
      <Compile Include="Assets\Scripts(C#)\GirlController.cs" />
      <Compile Include="Assets\Scripts(C#)\CameraController.cs" />
      <Compile Include="Assets\Scripts(C#)\MoonController.cs" />
      <Compile Include="Assets\Scripts(C#)\BoxController.cs" />
      <Compile Include="Assets\Scripts(C#)\ShadowController.cs" />
-     <Compile Include="Assets\Scripts(C#)\BGController.cs" />
+     <Compile Include="Assets\Scripts(C#)\SkyRiverController.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BGController : MonoBehaviour
 {
-    float speed = 0.1f;
+    //강
+    public float speed = 0.1f;
+
     // Start is called before the first frame update
     void Start()
     {

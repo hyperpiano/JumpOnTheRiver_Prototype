@@ -17,6 +17,6 @@ public class MoonController : MonoBehaviour
     void Update()
     {
         girlControl = Girl.GetComponent<GirlController>();
-        transform.position = new Vector2(transform.position.x - girlControl.direction * girlControl.speed * 0.00015f, transform.position.y);
+        transform.localPosition = new Vector2(transform.localPosition.x - girlControl.direction * girlControl.speed * 0.00015f, transform.localPosition.y);
     }
 }
