@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class CloudController : MonoBehaviour
 {
-    float speed = 0.5f;
+    float cloudSpeed;
     // Start is called before the first frame update
     void Start()
     {
-        
+        //1초에 10.8px의 속도로 움직임
+        cloudSpeed = 0.1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
-        if(transform.position.x < -20.0f){
-            Object.Destroy(gameObject);
+        //배경 흐르게 하기
+        transform.localPosition = new Vector2(transform.localPosition.x - cloudSpeed * Time.deltaTime, transform.localPosition.y);
+        if(transform.localPosition.x < -62.0f){
+            transform.localPosition = new Vector2(150.8f, 0f);
         }
     }
 }
