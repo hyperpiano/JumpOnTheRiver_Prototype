@@ -21,9 +21,9 @@ public class BoxController : MonoBehaviour
         //소녀 오브젝트의 GirlController 컴포넌트를 호출
         GirlController girlControl = Girl.GetComponent<GirlController>();
         
-        //만약 소녀가 움직이는 경우
-        if(girlControl.isMove){
-            
+        //만약 소녀가 앉았을 경우
+        if(girlControl.isSit){
+            transform.position = new Vector2(BoxShadow.transform.position.x, transform.position.y);
         }
     }
 }

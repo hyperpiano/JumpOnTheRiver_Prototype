@@ -36,11 +36,6 @@ public class ShadowController : MonoBehaviour
         Move();
         Jump();
         Land();
-
-        Debug.Log("isGrounded = " + isGrounded);
-        Debug.Log("isJump = " + isJump);
-        Debug.Log(direction != 0f);
-        Debug.Log(land.collider.gameObject);
     }
 
     void Move(){
@@ -49,6 +44,9 @@ public class ShadowController : MonoBehaviour
         if(girlControl.isMove){
             direction = girlControl.direction;
             _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
+            if(_position.x != Girl.transform.position.x){
+                _position.x = Girl.transform.position.x;
+            }
             transform.position = _position;
         }
         else if(girlControl.isMove == false){
