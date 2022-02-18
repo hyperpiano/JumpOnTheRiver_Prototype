@@ -1,0 +1,4 @@
+repository "Prototype"
+  path "/"
+    br "/main"
+    co "/main"
