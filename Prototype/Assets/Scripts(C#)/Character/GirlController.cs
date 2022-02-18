@@ -21,8 +21,8 @@ public class GirlController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 1f;
-        jumpForce = 3.5f;
+        speed = 2f;
+        jumpForce = 4f;
         isSit = false;
         isMove = false;
         direction = 0;
@@ -40,6 +40,12 @@ public class GirlController : MonoBehaviour
             Jump();
         }
         Land();
+
+        Debug.Log("Girl isGrounded = " + isGrounded);
+        Debug.Log("Girl land = " + land.collider);
+        if(land.collider != null){
+            Debug.Log(land.collider.tag);
+        }
     }
 
     void Move(){
@@ -88,7 +94,7 @@ public class GirlController : MonoBehaviour
 
     void Land(){
         land = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.5f), -Vector2.up, 1.5f);
-        if(!isGrounded && (land.collider != null) && GetComponent<Rigidbody2D>().velocity.y < 0){
+        if(!isGrounded && (land.collider != null) && GetComponent<Rigidbody2D>().velocity.y <= 0){
             GirlAnimator.SetBool("isLand", true);
         }
     }
@@ -117,6 +123,14 @@ public class GirlController : MonoBehaviour
         if(other.gameObject.tag == "Box"){
             if(other.contacts[0].normal.x < 0f){
                 Push();
+            }
+        }
+        if(other.gameObject.tag == "Platform"){
+            if(other.contacts[0].normal.y > 0.7f){
+                isJump = false;
+                isGrounded = true;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
             }
         }
     }

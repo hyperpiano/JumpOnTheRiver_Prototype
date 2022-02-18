@@ -119,6 +119,14 @@ public class ShadowController : MonoBehaviour
                 Push();
             }
         }
+        if(other.gameObject.tag == "Platform"){
+            if(other.contacts[0].normal.y < -0.7f){
+                isJump = false;
+                isGrounded = true;
+                ShadowAnimator.SetBool("isGrounded", true);
+                ShadowAnimator.SetBool("isLand", false);
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other) {
