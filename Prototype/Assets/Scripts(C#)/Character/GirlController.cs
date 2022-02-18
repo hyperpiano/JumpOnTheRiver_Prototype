@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class GirlController : MonoBehaviour
 {
-     public float speed;
-     public float jumpForce;
-     public bool isSit;
+    public float speed;
+    public float jumpForce;
+    public bool isSit;
 
      //for Reference
-     public bool isMove;
-     public bool isJump;
-     public float direction;
+    public bool isMove;
+    public bool isJump;
+    public float direction;
 
-     bool isGrounded;
+    bool isGrounded;
 
-     Animator GirlAnimator;
+    Animator GirlAnimator;
 
     RaycastHit2D land;
     // Start is called before the first frame update
@@ -70,9 +70,9 @@ public class GirlController : MonoBehaviour
 
     void Jump(){
         Vector2 jumpVector = new Vector2(0, jumpForce);
-        if(Input.GetKeyDown(KeyCode.UpArrow) && (isGrounded)){
+        if(Input.GetKeyDown(KeyCode.Space) && (isGrounded)){
             isJump = true;
-            Rigidbody2D girlRigid= GetComponent<Rigidbody2D>();
+            Rigidbody2D girlRigid= gameObject.GetComponent<Rigidbody2D>();
             girlRigid.velocity = jumpVector;
         }
     }
@@ -88,7 +88,7 @@ public class GirlController : MonoBehaviour
 
     void Land(){
         land = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.5f), -Vector2.up, 1.5f);
-        if(isJump && (land.collider != null) && GetComponent<Rigidbody2D>().velocity.y < 0){
+        if(!isGrounded && (land.collider != null) && GetComponent<Rigidbody2D>().velocity.y < 0){
             GirlAnimator.SetBool("isLand", true);
         }
     }
@@ -125,6 +125,10 @@ public class GirlController : MonoBehaviour
         if(other.gameObject.tag == "Platform"){
                 isGrounded = false;
                 GirlAnimator.SetBool("isGrounded", false);
+        }
+        else if (other.gameObject.tag == "Platform" && other.contacts[0].normal.y == 0){
+            isGrounded = false;
+            GirlAnimator.SetBool("isGrounded", false);
         }
     }
 }
