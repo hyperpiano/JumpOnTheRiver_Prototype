@@ -16,11 +16,13 @@ public class ShadowController : MonoBehaviour
     float direction;
     bool isJump;
     bool isGrounded;
+    bool canMove;
     float distance;
     // Start is called before the first frame update
     void Start()
     {   
         isGrounded = true;
+        canMove = true;
         
         girlControl =  Girl.GetComponent<GirlController>();
         shadowRigid= GetComponent<Rigidbody2D>();
@@ -33,11 +35,12 @@ public class ShadowController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(distance);
+        Debug.Log(girlControl.isShadowCanMove);
         //소녀가 점프할 경우 따라서 점프함
         Move();
         Jump();
         Land();
+
     }
 
     void Move(){
@@ -55,6 +58,7 @@ public class ShadowController : MonoBehaviour
         //소녀가 앉았을 경우 혼자서 움직임
         if(girlControl.isSit){
             direction = Input.GetAxis("Horizontal");
+            
             _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
             transform.position = _position;
             distance = _position.x - Girl.transform.position.x;
@@ -101,6 +105,7 @@ public class ShadowController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
+        Debug.Log(other.gameObject.tag);
         if(other.gameObject.tag == "Platform"){
             if(other.contacts[0].normal.y < -0.7f){
                 isJump = false;
@@ -109,20 +114,47 @@ public class ShadowController : MonoBehaviour
                 ShadowAnimator.SetBool("isLand", false);
             }
         }
+        if(other.gameObject.tag == "Box"){
+            if(other.contacts[0].normal.y < -0.7f){
+                isJump = false;
+                isGrounded = true;
+                ShadowAnimator.SetBool("isGrounded", true);
+                ShadowAnimator.SetBool("isLand", false);
+            }
+        }
+        if(other.gameObject.tag == "Rock"){
+            if(other.contacts[0].normal.y < -0.7f){
+                isJump = false;
+                isGrounded = true;
+                ShadowAnimator.SetBool("isGrounded", true);
+                ShadowAnimator.SetBool("isLand", false);
+            }
+            else{
+                girlControl.isShadowCanMove = false;
+                canMove = false;
+            }
+        }
+        
     }
 
     private void OnCollisionStay2D(Collision2D other) {
         if(other.gameObject.tag == "Box"){
-            if(other.contacts[0].normal.x < 0f){
+            if(other.contacts[0].normal.y == 0f){
                 Push();
             }
         }
-        if(other.gameObject.tag == "Platform"){
-            if(other.contacts[0].normal.y < -0.7f){
-                isJump = false;
-                isGrounded = true;
-                ShadowAnimator.SetBool("isGrounded", true);
-                ShadowAnimator.SetBool("isLand", false);
+        if(other.gameObject.tag == "Rock"){
+            if(other.contacts[0].normal.x > 0.7f){
+                if(!(girlControl.direction <= 0f)){
+                    girlControl.isShadowCanMove = true;
+                    canMove = true;
+                }
+            }
+            else if (other.contacts[0].normal.x < 0.7f){
+                if(!(girlControl.direction >= 0f)){
+                    girlControl.isShadowCanMove = true;
+                    canMove = true;
+                }
             }
         }
     }
@@ -130,6 +162,7 @@ public class ShadowController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D other) {
         Debug.Log(1);
         if(other.gameObject.tag == "Platform"){
+            girlControl.isShadowCanMove = true;
             isGrounded = false;
             ShadowAnimator.SetBool("isGrounded", false);
         }

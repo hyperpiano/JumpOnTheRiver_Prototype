@@ -14,6 +14,7 @@ public class GirlController : MonoBehaviour
     public float direction;
 
     bool isGrounded;
+    public bool isShadowCanMove;
 
     Animator GirlAnimator;
 
@@ -27,7 +28,7 @@ public class GirlController : MonoBehaviour
         isMove = false;
         direction = 0;
         GirlAnimator = this.GetComponent<Animator>();
-        
+        isShadowCanMove = true;
     }
 
     // Update is called once per frame
@@ -40,12 +41,6 @@ public class GirlController : MonoBehaviour
             Jump();
         }
         Land();
-
-        Debug.Log("Girl isGrounded = " + isGrounded);
-        Debug.Log("Girl land = " + land.collider);
-        if(land.collider != null){
-            Debug.Log(land.collider.tag);
-        }
     }
 
     void Move(){
@@ -68,10 +63,11 @@ public class GirlController : MonoBehaviour
         else if(direction > 0){
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
         }
-
-        Vector2 _position = transform.position;
-        _position.x = _position.x + speed * direction * Time.deltaTime;
-        transform.position = _position;
+        if(isShadowCanMove){
+             Vector2 _position = transform.position;
+            _position.x = _position.x + speed * direction * Time.deltaTime;
+            transform.position = _position;
+        }
     }
 
     void Jump(){
@@ -110,6 +106,14 @@ public class GirlController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Platform"){
+            if(other.contacts[0].normal.y > 0.7f){
+                isJump = false;
+                isGrounded = true;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
+            }
+        }
+        if(other.gameObject.tag == "Box"){
             if(other.contacts[0].normal.y > 0.7f){
                 isJump = false;
                 isGrounded = true;
