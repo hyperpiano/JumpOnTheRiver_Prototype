@@ -16,7 +16,7 @@ public class ShadowController : MonoBehaviour
     float direction;
     bool isJump;
     bool isGrounded;
-
+    float distance;
     // Start is called before the first frame update
     void Start()
     {   
@@ -27,11 +27,13 @@ public class ShadowController : MonoBehaviour
         jumpVector = new Vector2(0, girlControl.jumpForce * -1f);
         ShadowAnimator = GetComponent<Animator>();
         isJump = false;
+        distance = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(distance);
         //소녀가 점프할 경우 따라서 점프함
         Move();
         Jump();
@@ -43,10 +45,7 @@ public class ShadowController : MonoBehaviour
         //소녀가 움직일 경우 따라서 움직임
         if(girlControl.isMove){
             direction = girlControl.direction;
-            _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
-            if(_position.x != Girl.transform.position.x){
-                _position.x = Girl.transform.position.x;
-            }
+            _position.x = Girl.transform.position.x + distance;
             transform.position = _position;
         }
         else if(girlControl.isMove == false){
@@ -58,6 +57,7 @@ public class ShadowController : MonoBehaviour
             direction = Input.GetAxis("Horizontal");
             _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
             transform.position = _position;
+            distance = _position.x - Girl.transform.position.x;
         }
         if(direction < 0){
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
