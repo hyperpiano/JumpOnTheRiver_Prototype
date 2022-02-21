@@ -13,7 +13,7 @@ public class GirlController : MonoBehaviour
     public bool isJump;
     public float direction;
 
-    bool isGrounded;
+    public bool isGrounded;
     public bool isShadowCanMove;
 
     Animator GirlAnimator;
@@ -121,6 +121,14 @@ public class GirlController : MonoBehaviour
                 GirlAnimator.SetBool("isLand", false);
             }
         }
+        if(other.gameObject.tag == "Rock"){
+            if(other.contacts[0].normal.y > 0.7f){
+                isJump = false;
+                isGrounded = true;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
+            }
+        }
     }
 
     private void OnCollisionStay2D(Collision2D other) {
@@ -128,8 +136,22 @@ public class GirlController : MonoBehaviour
             if(other.contacts[0].normal.x < 0f){
                 Push();
             }
+             if(other.contacts[0].normal.y > 0.7f){
+                isJump = false;
+                isGrounded = true;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
+            }
         }
         if(other.gameObject.tag == "Platform"){
+            if(other.contacts[0].normal.y > 0.7f){
+                isJump = false;
+                isGrounded = true;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
+            }
+        }
+        if(other.gameObject.tag == "Rock"){
             if(other.contacts[0].normal.y > 0.7f){
                 isJump = false;
                 isGrounded = true;
