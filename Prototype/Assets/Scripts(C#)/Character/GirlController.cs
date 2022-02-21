@@ -105,70 +105,37 @@ public class GirlController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.tag == "Platform"){
-            if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
+        if(other.collider != null){
+            if(other.collider.tag == "Vine" || other.collider.tag == "Doll"){
+                
             }
-        }
-        if(other.gameObject.tag == "Box"){
-            if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
-            }
-        }
-        if(other.gameObject.tag == "Rock"){
-            if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
+            else{
+                if(other.contacts[0].normal.y > 0.7f){
+                    isJump = false;
+                    isGrounded = true;
+                    GirlAnimator.SetBool("isGrounded", true);
+                    GirlAnimator.SetBool("isLand", false);
+                }
             }
         }
     }
 
     private void OnCollisionStay2D(Collision2D other) {
-        if(other.gameObject.tag == "Box"){
-            if(other.contacts[0].normal.x < 0f){
+        if(other.collider != null){
+            if(other.contacts[0].normal.y > 0.7f){
+                isGrounded = true;
+                isJump = false;
+                GirlAnimator.SetBool("isGrounded", true);
+                GirlAnimator.SetBool("isLand", false);
+            }
+            else if(other.gameObject.tag == "Box"){
                 Push();
             }
-             if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
-            }
         }
-        if(other.gameObject.tag == "Platform"){
-            if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
-            }
-        }
-        if(other.gameObject.tag == "Rock"){
-            if(other.contacts[0].normal.y > 0.7f){
-                isJump = false;
-                isGrounded = true;
-                GirlAnimator.SetBool("isGrounded", true);
-                GirlAnimator.SetBool("isLand", false);
-            }
-        }
+        
     }
 
     private void OnCollisionExit2D(Collision2D other) {
-        if(other.gameObject.tag == "Platform"){
-                isGrounded = false;
-                GirlAnimator.SetBool("isGrounded", false);
-        }
-        else if (other.gameObject.tag == "Platform" && other.contacts[0].normal.y == 0){
-            isGrounded = false;
-            GirlAnimator.SetBool("isGrounded", false);
-        }
+        
     }
 }

@@ -58,10 +58,11 @@ public class ShadowController : MonoBehaviour
         //소녀가 앉았을 경우 혼자서 움직임
         if(girlControl.isSit){
             direction = Input.GetAxis("Horizontal");
-            
-            _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
-            transform.position = _position;
-            distance = _position.x - Girl.transform.position.x;
+            if(canMove){
+                _position.x = _position.x + girlControl.speed * direction * Time.deltaTime;
+                transform.position = _position;
+                distance = _position.x - Girl.transform.position.x;
+            }
         }
         if(direction < 0){
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
@@ -97,7 +98,7 @@ public class ShadowController : MonoBehaviour
 
     void Push(){
         if(Input.GetKey(KeyCode.LeftControl)){
-            Move();
+            canMove = true;
         }
         else{
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
@@ -105,24 +106,8 @@ public class ShadowController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log(other.contacts[0].normal.y);
-        if(other.gameObject.tag == "Platform"){
-            if(other.contacts[0].normal.y < -0.7f){
-                isJump = false;
-                isGrounded = true;
-                ShadowAnimator.SetBool("isGrounded", true);
-                ShadowAnimator.SetBool("isLand", false);
-            }
-        }
-        if(other.gameObject.tag == "Box"){
-            if(other.contacts[0].normal.y < -0.7f){
-                isJump = false;
-                isGrounded = true;
-                ShadowAnimator.SetBool("isGrounded", true);
-                ShadowAnimator.SetBool("isLand", false);
-            }
-        }
-        if(other.gameObject.tag == "Rock"){
+        if(other.collider != null){
+            Debug.Log(other.contacts[0].normal.y);
             if(other.contacts[0].normal.y < -0.7f){
                 isJump = false;
                 isGrounded = true;
@@ -138,34 +123,22 @@ public class ShadowController : MonoBehaviour
     }
 
     private void OnCollisionStay2D(Collision2D other) {
-        if(other.gameObject.tag == "Box"){
-            if(other.contacts[0].normal.y == 0f){
-                Push();
-            }
-        }
-        if(other.gameObject.tag == "Box"){
+        Debug.Log(other.collider);  
+        if(other.collider != null){
             if(other.contacts[0].normal.y < -0.7f){
                 isJump = false;
                 isGrounded = true;
                 ShadowAnimator.SetBool("isGrounded", true);
                 ShadowAnimator.SetBool("isLand", false);
             }
-        }
-        if(other.gameObject.tag == "Rock"){
-            if(other.contacts[0].normal.y < -0.7f){
-                isJump = false;
-                isGrounded = true;
-                ShadowAnimator.SetBool("isGrounded", true);
-                ShadowAnimator.SetBool("isLand", false);
-            }
-            if(other.contacts[0].normal.x > 0.7f){
-                if(!(girlControl.direction <= 0f)){
+            else if(other.contacts[0].normal.x > 0.7f){
+                if(girlControl.direction > 0f){
                     girlControl.isShadowCanMove = true;
                     canMove = true;
                 }
             }
-            else if (other.contacts[0].normal.x < 0.7f){
-                if(!(girlControl.direction >= 0f)){
+            else if (other.contacts[0].normal.x < - 0.7f){
+                if(girlControl.direction < 0f){
                     girlControl.isShadowCanMove = true;
                     canMove = true;
                 }
@@ -174,11 +147,13 @@ public class ShadowController : MonoBehaviour
     }
 
     private void OnCollisionExit2D(Collision2D other) {
-        Debug.Log(1);
-        if(other.gameObject.tag == "Platform"){
+        if(other.collider != null){
             girlControl.isShadowCanMove = true;
-            isGrounded = false;
-            ShadowAnimator.SetBool("isGrounded", false);
+            if(other.contacts[0].normal.y < 0.7f){
+                isGrounded = false;
+                ShadowAnimator.SetBool("isGrounded", false);
+            }
+            
         }
     }
 }
